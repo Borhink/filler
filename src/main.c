@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 06:32:25 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/28 11:39:06 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/28 14:37:43 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,75 +27,91 @@ void	get_map_size(char *line, t_env *e)
 	if (ft_strstr(line, "Plateau"))
 	{
 		tmp = ft_strchr(line, ' ');
-		e->mapy = ft_atoi(++tmp);
+		e->my = ft_atoi(++tmp);
 		tmp = ft_strchr(tmp, ' ');
-		e->mapx = ft_atoi(++tmp);
+		e->mx = ft_atoi(++tmp);
 	}
-	free(line);
 }
 
-void	play_turn(t_env *e, int fd)
+void	get_piece_size(t_env *e)
 {
-	char	map[e->mapy][e->mapx];
+	char	*line;
+	char	*tmp;
+
+	if (get_next_line(0, &line) > 0)
+	{
+		tmp = ft_strchr(line, ' ');
+		e->py = ft_atoi(++tmp);
+		tmp = ft_strchr(tmp, ' ');
+		e->px = ft_atoi(++tmp);
+	}
+}
+
+void	make_piece(t_env *e, char map[e->my][e->mx])
+{
+	char	piece[e->py][e->px];
 	char	*line;
 	int		x;
 	int		y;
 
 	y = -1;
-	while (++y < e->mapy)
+	while (++y < e->py)
 	{
-		get_next_line(0, &line);
-		x = -1;
-		while (++x < e->mapx)
-			map[y][x] = line[x + 4];
+		if (get_next_line(0, &line) > 0)
+		{
+			x = -1;
+			while (++x < e->px)
+				piece[y][x] = line[x];
+			free(line);
+		}
 	}
+	(void)map;
+}
+
+void	make_map(t_env *e)
+{
+	char	map[e->my][e->mx];
+	char	*line;
+	int		x;
+	int		y;
+
 	y = -1;
-	while (++y < e->mapy)
+	while (++y < e->my)
 	{
-		x = -1;
-		while (++x < e->mapx)
-			ft_putchar_fd(map[y][x], fd);
-		ft_putchar_fd('\n', fd);
+		if (get_next_line(0, &line) > 0)
+		{
+			x = -1;
+			while (++x < e->mx)
+				map[y][x] = line[x + 4];
+			free(line);
+		}
 	}
+	get_piece_size(e);
+	make_piece(e, map);
 }
 
 int		main(void)
 {
 	char	*line;
-	int		fd;
 	t_env	e;
 
-	e.mapy = 0;
-	e.mapx = 0;
-	if ((fd = open("test", O_WRONLY)) > 0)
+	e.my = 0;
+	e.mx = 0;
+	if (get_next_line(0, &line) > 0)
 	{
-		if (get_next_line(0, &line) > 0)
+		e.player = (line[10] == '1' ? 'O' : 'X');
+		free(line);
+	}
+	while (get_next_line(0, &line) > 0)
+	{
+		if (ft_strstr(line, "Plateau"))
 		{
-			e.player = (line[10] == '1' ? 'O' : 'X');
-												ft_putchar_fd(e.player, fd);
-												ft_putstr_fd(" <- player\n", fd);
-			free(line);
+			if (!e.my || !e.mx)
+				get_map_size(line, &e);
+			next_line();
+			make_map(&e);
 		}
-		while (get_next_line(0, &line) > 0)
-		{
-			if (ft_strstr(line, "Plateau"))
-			{
-				if (!e.mapy || !e.mapx)
-					get_map_size(line, &e);
-												ft_putnbr_fd(e.mapy, fd);
-												ft_putstr_fd(" <- mapy\n", fd);
-												ft_putnbr_fd(e.mapx, fd);
-												ft_putstr_fd(" <- mapx\n", fd);
-				next_line();
-				play_turn(&e, fd);
-				ft_putstr("0 0\n");
-			}
-			else
-			{
-				ft_putstr_fd(line, fd);
-				ft_putstr_fd("\n", fd);
-			}
-		}
+		free(line);
 	}
 	return (0);
 }
