@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:09:10 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/29 13:00:03 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/29 21:52:15 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,47 @@ static void	make_piece(t_env *e, char map[e->m.y][e->m.x])
 	play(e, map, piece);
 }
 
+static void	set_direction(t_env *e)
+{
+	if (e->p1.y < e->p2.y)
+		e->s.y = 1;
+	else if (e->p1.y > e->p2.y)
+		e->s.y = -1;
+	else
+		e->s.y = (e->p1.y < e->m.y / 2 ? -1 : 1);
+	if (e->p1.x < e->p2.x)
+		e->s.x = 1;
+	else if (e->p1.x > e->p2.x)
+		e->s.x = -1;
+	else
+		e->s.x = (e->p1.x < e->m.x / 2 ? -1 : 1);
+}
+
 void		make_map(t_env *e)
 {
 	char	map[e->m.y][e->m.x];
 	char	*line;
-	int		x;
-	int		y;
+	t_pos	p;
 
-	y = -1;
-	while (++y < e->m.y)
+	p.y = -1;
+	while (++p.y < e->m.y)
 	{
 		if (get_next_line(0, &line) > 0)
 		{
-			x = -1;
-			while (++x < e->m.x)
-				map[y][x] = line[x + 4];
+			p.x = -1;
+			while (++p.x < e->m.x)
+			{
+				map[p.y][p.x] = line[p.x + 4];
+				if (cell_type(e, map[p.y][p.x]) == 1)
+					e->p1 = p;
+				if (cell_type(e, map[p.y][p.x]) == 2)
+					e->p2 = p;
+			}
 			free(line);
 		}
 	}
+	if (!e->s.y)
+		set_direction(e);
 	get_piece_size(e);
 	make_piece(e, map);
 }
