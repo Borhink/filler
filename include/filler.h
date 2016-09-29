@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 17:40:42 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/28 16:37:09 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/29 12:59:28 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,15 @@ struct	s_env
 	char	player;
 	t_pos	m;
 	t_pos	p;
+	t_pos	o;
 };
 
+void	play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x]);
+
+void	get_map_size(char *line, t_env *e);
+void	make_map(t_env *e);
+
 t_pos	set_pos(int x, int y);
+void	next_line(void);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/10 16:05:27 by qhonore           #+#    #+#              #
-#    Updated: 2016/09/28 07:17:33 by qhonore          ###   ########.fr        #
+#    Updated: 2016/09/29 11:48:32 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ OBJ_PATH = ./obj/
 INC_PATH = ./include/ ./libft/includes/
 LIB_PATH = ./libft/
 
-SRC_NAME = main.c
+SRC_NAME = main.c init.c utils.c play.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = -lft
 NAME = qhonore.filler
