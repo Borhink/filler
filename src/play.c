@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:18:57 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/29 21:54:30 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/30 10:40:10 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	put_position(int nb, t_pos p)
 {
 	if (nb == 1)
 	{
-sleep(10);
 		ft_putnbr(p.y);
 		ft_putchar(' ');
 		ft_putnbr(p.x);
@@ -65,7 +64,7 @@ void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
 {
 	t_pos	p;
 
-	find_axe_x(e, map);
+	piece_type(e, piece) ? find_axe_x(e, map) : find_axe_y(e, map);
 	p.y = -1 - e->o.y;
 	while (++p.y < e->m.y)
 	{
@@ -78,20 +77,3 @@ void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
 	}
 	ft_putstr("0 0\n");
 }
-
-// void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
-// {
-// 	t_pos	p;
-//
-// 	p.y = -1 - e->o.y;
-// 	while (++p.y < e->m.y)
-// 	{
-// 		p.x = -1 - e->o.x;
-// 		while (++p.x < e->m.x)
-// 		{
-// 			if (place_piece(e, map, piece, p))
-// 				return ;
-// 		}
-// 	}
-// 	ft_putstr("0 0\n");
-// }
