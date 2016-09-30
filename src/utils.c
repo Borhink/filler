@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:10:34 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 10:34:48 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/30 16:34:06 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ void	next_line(void)
 
 	if (get_next_line(0, &line) > 0)
 		free(line);
+}
+
+int		get_dist(t_pos a, t_pos b)
+{
+	int		dist;
+
+	dist = ft_abs(a.x - b.x) + ft_abs(a.y - b.y);
+	return dist;
 }
 
 t_pos	set_pos(int x, int y)

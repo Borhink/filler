@@ -6,11 +6,37 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 18:30:08 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 13:54:50 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/30 19:50:43 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+void		find_piece_best(t_env *e, char piece[e->p.y][e->p.x])
+{
+	t_pos	p;
+
+	e->bp = set_pos(e->s.x > 0 ? 0 : e->p.x, e->s.y > 0 ? 0 : e->p.y);
+	p.y = -1;
+	while (++p.y < e->p.y)
+	{
+		p.x = -1;
+		while (++p.x < e->p.x)
+		{
+			if (piece[p.y][p.x] == '*')
+			{
+				if (e->a > 0 && e->s.x > 0 && e->bp.x < p.x)
+					e->bp = p;
+				else if (e->a > 0 && e->s.x < 0 && e->bp.x > p.x)
+					e->bp = p;
+				else if (e->a < 0 && e->s.y > 0 && e->bp.y < p.x)
+					e->bp = p;
+				else if (e->a < 0 && e->s.y < 0 && e->bp.y > p.x)
+					e->bp = p;
+			}
+		}
+	}
+}
 
 static void	find_dest_x(t_env *e)
 {
@@ -66,6 +92,7 @@ void		find_axe_x(t_env *e, char map[e->m.y][e->m.x])
 {
 	t_pos	p;
 
+	e->a = 1;
 	e->p1 = set_pos(e->s.x > 0 ? 0 : e->m.x, e->s.y > 0 ? 0 : e->m.y);
 	e->p2 = set_pos(e->s.x > 0 ? e->m.x : 0, e->s.y > 0 ? e->m.y : 0);
 	p.x = e->s.x < 0 ? -1 : e->m.x;
@@ -90,6 +117,7 @@ void		find_axe_y(t_env *e, char map[e->m.y][e->m.x])
 {
 	t_pos	p;
 
+	e->a = -1;
 	e->p1 = set_pos(e->s.x > 0 ? 0 : e->m.x, e->s.y > 0 ? 0 : e->m.y);
 	e->p2 = set_pos(e->s.x > 0 ? e->m.x : 0, e->s.y > 0 ? e->m.y : 0);
 	p.y = e->s.y < 0 ? -1 : e->m.y;

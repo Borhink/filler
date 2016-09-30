@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 17:40:42 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 13:54:05 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/09/30 18:35:05 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,17 @@ struct	s_env
 	t_pos	p1;// Pos player 1
 	t_pos	p2;// Pos player 2
 	t_pos	d;// Dest
+	int		a;// Axe destination
+	int		hd;// Horizontal Dest (0 = non atteint, 1 = atteint)
+	int		vd;// Vertical Dest
+	t_pos	b;// actual Best position
+	t_pos	bp;// best Piece position
+	int		fd;
 };
 
 void	find_axe_x(t_env *e, char map[e->m.y][e->m.x]);
 void	find_axe_y(t_env *e, char map[e->m.y][e->m.x]);
+void	find_piece_best(t_env *e, char piece[e->p.y][e->p.x]);
 void	play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x]);
 
 void	get_map_size(char *line, t_env *e);
@@ -45,6 +52,7 @@ void	make_map(t_env *e);
 
 t_pos	set_pos(int x, int y);
 void	next_line(void);
+int		get_dist(t_pos a, t_pos b);
 int		cell_type(t_env *e, char cell);
 int		piece_type(t_env *e, char piece[e->p.y][e->p.x]);
 
