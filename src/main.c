@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 06:32:25 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 19:52:49 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/01 15:41:10 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main(void)
 	}
 	while (get_next_line(0, &line) > 0)
 	{
-		// usleep(500000);
+		// usleep(300000);
 		if (ft_strstr(line, "Plateau"))
 		{
 			if (!e.m.y || !e.m.x)
@@ -48,7 +48,7 @@ int		main(void)
 // Trouver le point de destination qui se rapproche le plus de l'adversaire OK
 // Trouver la case pour poser notre bloc au plus proche de la destination OK
 // Poser la piece OK
-// check si on est au dessu de l'ennemi pour placer une piece !
+// --check si on est au dessu de l'ennemi pour placer une piece !
 // trouver solution faille dans la muraille
 // segfault sur grande map
-// Baiser l'ennemi KO
+// Baiser l'ennemi KO (grati + abandlin en -p2 own me)

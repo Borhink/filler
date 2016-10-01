@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 17:40:42 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 18:35:05 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/01 15:03:36 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ struct	s_env
 	int		hd;// Horizontal Dest (0 = non atteint, 1 = atteint)
 	int		vd;// Vertical Dest
 	t_pos	b;// actual Best position
+	t_pos	sb;// Substitue to the Best position
 	t_pos	bp;// best Piece position
 	int		fd;
 };
