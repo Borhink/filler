@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:09:10 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/30 18:22:02 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/01 17:49:30 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	make_piece(t_env *e, char map[e->m.y][e->m.x])
 	int		y;
 
 	y = -1;
-	e->o = set_pos(e->m.x * 2, e->m.y * 2);
+	e->o = set_pos(1000000, 1000000);
 	while (++y < e->p.y)
 	{
 		if (get_next_line(0, &line) > 0)
@@ -58,29 +58,13 @@ static void	make_piece(t_env *e, char map[e->m.y][e->m.x])
 				if (line[x] == '*' && e->o.y > y)
 					e->o.y = y;
 				if (line[x] == '*' && e->o.x > x)
-					e->o.y = x;
+					e->o.x = x;
 				piece[y][x] = line[x];
 			}
 			free(line);
 		}
 	}
 	play(e, map, piece);
-}
-
-static void	set_direction(t_env *e)
-{
-	if (e->p1.y < e->p2.y)
-		e->s.y = 1;
-	else if (e->p1.y > e->p2.y)
-		e->s.y = -1;
-	else
-		e->s.y = (e->p1.y < e->m.y / 2 ? -1 : 1);
-	if (e->p1.x < e->p2.x)
-		e->s.x = 1;
-	else if (e->p1.x > e->p2.x)
-		e->s.x = -1;
-	else
-		e->s.x = (e->p1.x < e->m.x / 2 ? -1 : 1);
 }
 
 void		make_map(t_env *e)
@@ -96,18 +80,10 @@ void		make_map(t_env *e)
 		{
 			p.x = -1;
 			while (++p.x < e->m.x)
-			{
 				map[p.y][p.x] = line[p.x + 4];
-				if (cell_type(e, map[p.y][p.x]) == 1)
-					e->p1 = p;
-				if (cell_type(e, map[p.y][p.x]) == 2)
-					e->p2 = p;
-			}
 			free(line);
 		}
 	}
-	if (!e->s.y)
-		set_direction(e);
 	get_piece_size(e);
 	make_piece(e, map);
 }

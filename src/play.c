@@ -6,61 +6,11 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:18:57 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/01 15:17:40 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/01 17:48:54 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-
-// static void	print_test(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
-// {
-// 	t_pos	p;
-//
-// 	map[e->p1.y][e->p1.x] = 'P';
-// 	map[e->p2.y][e->p2.x] = 'E';
-// 	map[e->d.y][e->d.x] = 'D';
-// 	p.y = -1;
-// 	while (++p.y < e->p.y)
-// 	{
-// 		p.x = -1;
-// 		while (++p.x < e->p.x)
-// 			if (piece[p.y][p.x] == '*')
-// 				map[e->b.y + p.y][e->b.x + p.x] = '$';
-// 	}
-// 	if (e->b.y >= 0 && e->b.x >= 0)
-// 		map[e->b.y][e->b.x] = piece[0][0] == '*' ? 'B' : 'b';
-// 	p.y = -1;
-// 	while (++p.y < e->m.y)
-// 	{
-// 		p.x = -1;
-// 		while (++p.x < e->m.x)
-// 			ft_putchar_fd(map[p.y][p.x], e->fd);
-// 		ft_putchar_fd('\n', e->fd);
-// 	}
-// 	ft_putchar_fd('\n', e->fd);
-// }
-
-static int	best_cell(t_env *e, t_pos p)
-{
-	t_pos	new;
-	t_pos	best;
-	t_pos	sub;
-
-	new = set_pos(p.x + e->bp.x, p.y + e->bp.y);
-	best = set_pos(e->b.x + e->bp.x, e->b.y + e->bp.y);
-	sub = set_pos(e->sb.x + e->bp.x, e->sb.y + e->bp.y);
-	if (get_dist(e->d, new) < get_dist(e->d, sub))
-		e->sb = p;
-	if (get_dist(e->d, new) < get_dist(e->d, best))
-	{
-		if ((e->a > 0 ? e->s.y > 0 && p.y <= e->p2.y
-		: e->s.y < 0 && p.y >= e->p2.y)
-		|| (e->a < 0 ? e->s.x > 0 && p.x <= e->p2.x
-		: e->s.x < 0 && p.x >= e->p2.x))
-			return (1);
-	}
-	return (0);
-}
 
 static int	can_place(t_env *e, char cur, int *nb, t_pos c)
 {
@@ -70,15 +20,6 @@ static int	can_place(t_env *e, char cur, int *nb, t_pos c)
 	else if (cur == e->player || cur == e->player + 32)
 		(*nb)++;
 	return (*nb > 1 ? 0 : 1);
-}
-
-static void	put_position(t_pos p)
-{
-
-	ft_putnbr(p.y);
-	ft_putchar(' ');
-	ft_putnbr(p.x);
-	ft_putchar('\n');
 }
 
 static int	place_piece(t_env *e, char map[e->m.y][e->m.x], \
@@ -98,7 +39,8 @@ static int	place_piece(t_env *e, char map[e->m.y][e->m.x], \
 			if (piece[p.y][p.x] == '*')
 			{
 				c = set_pos(p.x + m.x, p.y + m.y);
-				if (!can_place(e, map[c.y][c.x], &nb, c))
+				if (c.y >= e->m.y || c.x >= e->m.x
+				|| !can_place(e, map[c.y][c.x], &nb, c))
 					return (0);
 			}
 		}
@@ -106,45 +48,76 @@ static int	place_piece(t_env *e, char map[e->m.y][e->m.x], \
 	return (nb == 1 ? 1 : 0);
 }
 
-void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
+static int	piece_dist(t_env *e, char piece[e->p.y][e->p.x], t_pos ep, t_pos pp)
 {
 	t_pos	p;
+	t_pos	cur;
+	int		dist;
 
-	e->a = 0;
-	if (!e->hd && (piece_type(e, piece) || e->vd))
-		find_axe_x(e, map);
-	else if (!piece_type(e, piece) && !e->vd)
-		find_axe_y(e, map);
-	find_piece_best(e, piece);
-	p.y = e->s.y < 0 ? -1 - e->o.y : e->m.y;
-	e->b = set_pos(-99999, -99999);
-	e->sb = set_pos(-99999, -99999);
-	while (e->s.y < 0 ? ++p.y < e->m.y : --p.y >= 0 -(e->o.y))
+	p.y = -1;
+	dist = 0;
+	while (++p.y < e->p.y)
 	{
-		p.x = e->s.x < 0 ? -1 - e->o.x : e->m.x;
-		while (e->s.x < 0 ? ++p.x < e->m.x : --p.x >= 0 -(e->o.x))
+		p.x = -1;
+		while (++p.x < e->p.x)
 		{
-			if (place_piece(e, map, piece, p))
+			if (piece[p.y][p.x] == '*')
 			{
-				if (e->vd && e->hd)
-				{
-					// print_test(e, map, piece);
-					return (put_position(p));
-				}
-				else if (best_cell(e, p))
-					e->b = p;
+				cur = set_pos(pp.x + p.x, pp.y + p.y);
+				dist += get_dist(ep, cur);
 			}
 		}
 	}
-	if (e->b.y != -99999 || e->sb.y != -99999)
+	return (dist);
+}
+
+static int	best_cell(t_env *e, char map[e->m.y][e->m.x], \
+						char piece[e->p.y][e->p.x], t_pos pp)
+{
+	t_pos	p;
+	int		cur;
+	int		best;
+
+	p.y = -1;
+	best = 1000000000;
+	while (++p.y < e->m.y)
 	{
-		p = set_pos(e->b.x + e->bp.x, e->b.y + e->bp.y);
-		if (get_dist(e->d, p) == 0 && e->a > 0)
-			e->hd = 1;
-		else if (get_dist(e->d, p) == 0 && e->a < 0)
-			e->vd = 1;
-		// print_test(e, map, piece);
-		return (e->b.y != -99999 ? put_position(e->b) : put_position(e->sb));
+		p.x = -1;
+		while (++p.x < e->m.x)
+		{
+			if (cell_type(e, map[p.y][p.x]) == 2)
+			{
+				if ((cur = piece_dist(e, piece, p, pp)) < best)
+					best = cur;
+			}
+		}
 	}
-	ft_putstr("0 0\n");
+	return (best);
+}
+
+void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
+{
+	t_pos	p;
+	int		cur;
+	int		best;
+
+	e->b = set_pos(0, 0);
+	best = 1000000000;
+	p.y = -1 - e->o.y;
+	while (++p.y < e->m.y)
+	{
+		p.x = -1 - e->o.x;
+		while (++p.x < e->m.x)
+		{
+			if (place_piece(e, map, piece, p))
+			{
+				if ((cur = best_cell(e, map, piece, p)) < best)
+				{
+					best = cur;
+					e->b = p;
+				}
+			}
+		}
+	}
+	put_position(e->b);
 }
