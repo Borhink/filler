@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:09:10 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 22:05:08 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 23:17:09 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			get_map_size(char *line, t_env *e)
 		e->m.y = ft_atoi(++tmp);
 		tmp = ft_strchr(tmp, ' ');
 		e->m.x = ft_atoi(++tmp);
-		tmp = ft_strjoin("Filler - ", e->player == 'X' ? "Blue" : "Red");
+		tmp = ft_strjoin("Filler - Player ", e->player == 'X' ? "blue" : "red");
 		if (!(e->win = mlx_new_window(e->mlx, e->m.x * 10,
 		e->m.y * 10, tmp)) || !(create_img(e, &(e->img))))
 			return (0);
@@ -53,6 +53,7 @@ static void	get_piece_size(t_env *e)
 		e->p.y = ft_atoi(++tmp);
 		tmp = ft_strchr(tmp, ' ');
 		e->p.x = ft_atoi(++tmp);
+		free(line);
 	}
 }
 
