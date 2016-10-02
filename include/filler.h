@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 17:40:42 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 21:42:47 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 22:00:01 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "libft.h"
 # include "mlx.h"
+
+# define NOTIFY_MASK (1L<<17)
+# define DESTROYNOTIFY 17
 
 typedef struct s_pos	t_pos;
 typedef struct s_img	t_img;
@@ -55,9 +58,9 @@ int		get_map_size(char *line, t_env *e);
 void	make_map(t_env *e);
 
 t_pos	set_pos(int x, int y);
-void	next_line(void);
 int		get_dist(t_pos a, t_pos b);
 int		cell_type(t_env *e, char cell);
 void	put_position(t_env *e, t_pos p);
+int		window_destroyed(void *env);
 
 #endif

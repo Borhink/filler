@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/05 00:56:03 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 21:29:44 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 22:04:28 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,10 @@ static void	add_cell(t_env *e, t_pos pos, char map[e->m.y][e->m.x])
 		{
 			if (map[pos.y][pos.x] == '.')
 				img_put_pixel(e, &(e->img), p, 0x918787);
-			else if (map[pos.y][pos.x] == 'X')
+			else if (map[pos.y][pos.x] == 'X' || map[pos.y][pos.x] == 'x')
 				img_put_pixel(e, &(e->img), p, 0x212D9A);
-			else if (map[pos.y][pos.x] == 'x')
-				img_put_pixel(e, &(e->img), p, 0x4554DB);
-			else if (map[pos.y][pos.x] == 'O')
-				img_put_pixel(e, &(e->img), p, 0x8A4B1E);
-			else if (map[pos.y][pos.x] == 'o')
-				img_put_pixel(e, &(e->img), p, 0xDC772F);
+			else if (map[pos.y][pos.x] == 'O' || map[pos.y][pos.x] == 'o')
+				img_put_pixel(e, &(e->img), p, 0xAB2020);
 		}
 	}
 }

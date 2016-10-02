@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:09:10 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 21:41:33 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 22:05:08 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,13 @@ int			get_map_size(char *line, t_env *e)
 		e->m.y = ft_atoi(++tmp);
 		tmp = ft_strchr(tmp, ' ');
 		e->m.x = ft_atoi(++tmp);
+		tmp = ft_strjoin("Filler - ", e->player == 'X' ? "Blue" : "Red");
 		if (!(e->win = mlx_new_window(e->mlx, e->m.x * 10,
-		e->m.y * 10, "Filler")) || !(create_img(e, &(e->img))))
+		e->m.y * 10, tmp)) || !(create_img(e, &(e->img))))
 			return (0);
+		free(tmp);
 		mlx_expose_hook(e->win, expose_hook, e);
+		mlx_hook(e->win, DESTROYNOTIFY, NOTIFY_MASK, window_destroyed, e);
 		return (1);
 	}
 	return (0);

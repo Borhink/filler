@@ -6,18 +6,22 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:10:34 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 21:37:03 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 22:07:52 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void	next_line(void)
+int		window_destroyed(void *env)
 {
-	char	*line;
+	t_env *e;
 
-	if (get_next_line(0, &line) > 0)
-		free(line);
+	e = (t_env*)env;
+	ft_putstr("0 0\n");
+	mlx_destroy_image(e->mlx, e->img.i);
+	mlx_destroy_window(e->mlx, e->win);
+	exit(1);
+	return (1);
 }
 
 int		get_dist(t_pos a, t_pos b)

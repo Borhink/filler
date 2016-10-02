@@ -6,11 +6,19 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 06:32:25 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 21:43:10 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 22:00:50 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+static void	next_line(void)
+{
+	char	*line;
+
+	if (get_next_line(0, &line) > 0)
+		free(line);
+}
 
 static int	game_loop(void *env)
 {
