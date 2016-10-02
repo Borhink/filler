@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:10:34 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/01 16:53:17 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 21:37:03 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,15 @@ int		cell_type(t_env *e, char cell)
 	return (2);
 }
 
-void	put_position(t_pos p)
+void	put_position(t_env *e, t_pos p)
 {
+	if (p.y == -100 && p.x == -100)
+	{
+		ft_putstr("0 0\n");
+		mlx_destroy_image(e->mlx, e->img.i);
+		mlx_destroy_window(e->mlx, e->win);
+		exit(1);
+	}
 	ft_putnbr(p.y);
 	ft_putchar(' ');
 	ft_putnbr(p.x);

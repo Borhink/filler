@@ -6,13 +6,21 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:09:10 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/01 17:49:30 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 21:41:33 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void		get_map_size(char *line, t_env *e)
+static int	create_img(t_env *e, t_img *img)
+{
+	if (!(img->i = mlx_new_image(e->mlx, e->m.x * 10, e->m.y * 10)))
+		return (0);
+	img->d = mlx_get_data_addr(img->i, &(img->bpp), &(img->sl), &(img->edn));
+	return (1);
+}
+
+int			get_map_size(char *line, t_env *e)
 {
 	char	*tmp;
 
@@ -22,7 +30,13 @@ void		get_map_size(char *line, t_env *e)
 		e->m.y = ft_atoi(++tmp);
 		tmp = ft_strchr(tmp, ' ');
 		e->m.x = ft_atoi(++tmp);
+		if (!(e->win = mlx_new_window(e->mlx, e->m.x * 10,
+		e->m.y * 10, "Filler")) || !(create_img(e, &(e->img))))
+			return (0);
+		mlx_expose_hook(e->win, expose_hook, e);
+		return (1);
 	}
+	return (0);
 }
 
 static void	get_piece_size(t_env *e)

@@ -6,18 +6,18 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/10 16:05:27 by qhonore           #+#    #+#              #
-#    Updated: 2016/10/01 16:50:52 by qhonore          ###   ########.fr        #
+#    Updated: 2016/10/02 20:33:40 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/
-INC_PATH = ./include/ ./libft/includes/
-LIB_PATH = ./libft/
+INC_PATH = ./include/ ./libft/includes/ ./minilibx_macos/
+LIB_PATH = ./libft/ ./minilibx_macos/
 
-SRC_NAME = main.c init.c utils.c play.c
+SRC_NAME = main.c init.c utils.c play.c expose_hook.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LIB_NAME = -lft
+LIB_NAME = -lft -lmlx
 NAME = qhonore.filler
 DEP = include/filler.h
 
@@ -26,9 +26,9 @@ OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 LIB = $(addprefix -L,$(LIB_PATH))
 
-CC = gcc
+CC = gcc -Ofast
 CFLAGS = -Wall -Wextra -Werror
-FRAMEWORK =
+FRAMEWORK = -framework OpenGL -framework AppKit
 
 all: lib
 	@echo "\033[37;44m Make $(NAME) \033[0m"
@@ -45,6 +45,8 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INCLUDE)
 lib:
 	@echo "\033[37;44m Make libft \033[0m"
 	@make -C ./libft/
+	@echo "\033[37;44m Make minilibx \033[0m"
+	@make -C ./minilibx_macos/
 
 clean:
 	rm -rf $(OBJ) $(OBJ_PATH)
@@ -52,6 +54,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	@make -C ./libft/ fclean
+	@make -C ./minilibx_macos/ clean
 
 re: fclean all
 

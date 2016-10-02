@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:18:57 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/01 17:48:54 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 21:36:01 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
 	int		cur;
 	int		best;
 
-	e->b = set_pos(0, 0);
+	e->b = set_pos(-100, -100);
 	best = 1000000000;
 	p.y = -1 - e->o.y;
 	while (++p.y < e->m.y)
@@ -119,5 +119,7 @@ void		play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x])
 			}
 		}
 	}
-	put_position(e->b);
+	game_render(e, map);
+	expose_hook((void*)e);
+	put_position(e, e->b);
 }

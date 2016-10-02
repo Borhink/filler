@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 17:40:42 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/01 17:49:21 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/02 21:42:47 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define FILLER_H
 
 # include "libft.h"
+# include "mlx.h"
 
 typedef struct s_pos	t_pos;
+typedef struct s_img	t_img;
 typedef struct s_env	t_env;
 
 struct	s_pos
@@ -24,8 +26,20 @@ struct	s_pos
 	int		y;
 };
 
+struct	s_img
+{
+	void	*i;
+	char	*d;
+	int		bpp;
+	int		sl;
+	int		edn;
+};
+
 struct	s_env
 {
+	void	*mlx;
+	void	*win;
+	t_img	img;
 	char	player;
 	t_pos	m;
 	t_pos	p;
@@ -34,14 +48,16 @@ struct	s_env
 };
 
 void	play(t_env *e, char map[e->m.y][e->m.x], char piece[e->p.y][e->p.x]);
+int		expose_hook(void *env);
+void	game_render(t_env *e, char map[e->m.y][e->m.x]);
 
-void	get_map_size(char *line, t_env *e);
+int		get_map_size(char *line, t_env *e);
 void	make_map(t_env *e);
 
 t_pos	set_pos(int x, int y);
 void	next_line(void);
 int		get_dist(t_pos a, t_pos b);
 int		cell_type(t_env *e, char cell);
-void	put_position(t_pos p);
+void	put_position(t_env *e, t_pos p);
 
 #endif
