@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 11:10:34 by qhonore           #+#    #+#             */
-/*   Updated: 2016/10/02 22:07:52 by qhonore          ###   ########.fr       */
+/*   Updated: 2016/10/03 14:53:32 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,17 @@ t_pos	set_pos(int x, int y)
 
 int		cell_type(t_env *e, char cell)
 {
+	char	enemy;
+
+	enemy = (e->player == 'X' ? 'O' : 'X');
 	if (cell == '.')
 		return (0);
 	if (cell == e->player || cell == e->player + 32)
 		return (1);
-	return (2);
+	if (cell == enemy || cell == enemy + 32)
+		return (2);
+	else
+		return (3);
 }
 
 void	put_position(t_env *e, t_pos p)
